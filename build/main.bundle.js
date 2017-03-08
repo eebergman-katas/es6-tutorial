@@ -148,7 +148,6 @@ var _mortgage2 = _interopRequireDefault(_mortgage);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 document.getElementById('calcBtn').addEventListener('click', function () {
-
     var principal = document.getElementById('principal').value;
     var years = document.getElementById('years').value;
     var rate = document.getElementById('rate').value;
@@ -156,12 +155,12 @@ document.getElementById('calcBtn').addEventListener('click', function () {
 
     document.getElementById('monthlyPayment').innerHTML = mortgage.monthlyPayment.toFixed(2);
     document.getElementById('monthlyRate').innerHTML = mortgage.monthlyRatePercent.toFixed(2);
-    var html = "";
+    var html = '';
 
     mortgage.amortization.forEach(function (year, index) {
-        return html += '\n\n         <tr>\n            <td>Year: ' + (index + 1) + '</td><br/>\n            <td class="currency">Principal: $' + Math.round(year.principalForYearY) + '</td><br/>\n            <td class="currency left">Interest: $' + Math.round(year.interestForYearY) + '</td><br/>\n            <td class="currency">Balance: $' + Math.round(year.balance) + '</td>\n            <td class="stretch">\n                <div class="flex">\n                    <div class="bar principal"\n                         style="flex:' + year.principalForYearY + ';-webkit-flex:' + year.principalForYearY + '">\n                    </div>\n                    <div class="bar interest"\n                         style="flex:' + year.interestForYearY + ';-webkit-flex:' + year.interestForYearY + '">\n                    </div>\n                </div>\n                <br/>\n            </td>\n        </tr>\n    ';
+        return html += '\n\n         <tr>\n            <td>Year: ' + (index + 1) + '</td><br/>\n            <td class="currency">\n                Principal: $' + Math.round(year.principalForYearY) + '\n            </td><br/>\n\n            <td class="currency left">\n                Interest: $' + Math.round(year.interestForYearY) + '\n            </td><br/>\n\n            <td class="currency">\n                Balance: $' + Math.round(year.balance) + '\n            </td>\n\n            <td class="stretch">\n                <div class="flex">\n                    <div class="bar principal"\n                         style="flex:' + year.principalForYearY + ';\n                         -webkit-flex:' + year.principalForYearY + '">\n                    </div>\n                    <div class="bar interest"\n                         style="flex:' + year.interestForYearY + ';\n                         -webkit-flex:' + year.interestForYearY + '">\n                    </div>\n                </div>\n                <br/>\n            </td>\n        </tr>\n    ';
     });
-    document.getElementById("amortization").innerHTML = html;
+    document.getElementById('amortization').innerHTML = html;
 });
 
 /***/ })

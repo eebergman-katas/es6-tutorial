@@ -12,8 +12,9 @@ export default class Mortgage {
 
     get monthlyPayment() {
         let monthlyRate = this.rate / 100 / 12;
-        return this.principal * monthlyRate / (1 - (Math.pow(1 / (1 + monthlyRate),
-            this.years * 12)));
+        return this.principal * monthlyRate /
+            (1 - (Math.pow(1 / (1 + monthlyRate),
+                this.years * 12)));
     };
 
     get amortization() {
@@ -34,7 +35,7 @@ export default class Mortgage {
                 principalForYearY += principalForMonthM;
                 balance -= principalForMonthM;
             };
-            amortization.push({ principalForYearY, interestForYearY, balance });
+        amortization.push({principalForYearY, interestForYearY, balance});
         };
         return amortization;
     };
