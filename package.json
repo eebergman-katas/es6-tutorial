@@ -9,7 +9,7 @@
     "babel": "babel --presets es2015 js/main.js -o build/main.bundle.js",
     "lint": "eslint .",
     "start": "http-server",
-    "webpack": "webpack"
+    "webpack": "webpack",
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",

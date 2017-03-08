@@ -2,8 +2,7 @@ import * as mortgage from './mortgage';
 
 document.getElementById('calcBtn').addEventListener('click', () => {
 
-    console.log("friday");
-
+    console.log("week");
 
     let principal = document.getElementById('principal').value;
     let years = document.getElementById('years').value;

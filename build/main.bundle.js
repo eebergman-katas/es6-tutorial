@@ -125,7 +125,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 document.getElementById('calcBtn').addEventListener('click', function () {
 
-    console.log("friday");
+    console.log("week");
 
     var principal = document.getElementById('principal').value;
     var years = document.getElementById('years').value;

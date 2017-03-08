@@ -1,4 +1,4 @@
-export let calculateMonthlyPayment = (principal, years, rate) => {
+let calculateMonthlyPayment = (principal, years, rate) => {
     let monthlyRate = 0;
     if (rate) {
         monthlyRate = rate / 100 / 12;
@@ -10,7 +10,7 @@ export let calculateMonthlyPayment = (principal, years, rate) => {
     return {principal, years, rate, monthlyPayment, monthlyRate};
 };
 
-export let calculateAmortization = (principal, years, rate) => {
+ let calculateAmortization = (principal, years, rate) => {
     let {monthlyRate, monthlyPayment} =
     calculateMonthlyPayment(principal, years, rate);
     let balance = principal;
