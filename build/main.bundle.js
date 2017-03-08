@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,75 +73,77 @@
 "use strict";
 
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var calculateMonthlyPayment = exports.calculateMonthlyPayment = function calculateMonthlyPayment(principal, years, rate) {
-    var monthlyRate = 0;
-    if (rate) {
-        monthlyRate = rate / 100 / 12;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Mortgage = function () {
+    function Mortgage(principal, years, rate) {
+        _classCallCheck(this, Mortgage);
+
+        this.principal = principal;
+        this.years = years;
+        this.rate = rate;
     }
-    var monthlyPayment = principal * monthlyRate / (1 - Math.pow(1 / (1 + monthlyRate), years * 12));
 
-    return { principal: principal, years: years, rate: rate, monthlyPayment: monthlyPayment, monthlyRate: monthlyRate };
-};
+    _createClass(Mortgage, [{
+        key: 'monthlyRatePercent',
+        get: function get() {
+            var monthlyRate = this.rate / 100 / 12;
+            return monthlyRate * 100;
+        }
+    }, {
+        key: 'monthlyPayment',
+        get: function get() {
+            var monthlyRate = this.rate / 100 / 12;
+            return this.principal * monthlyRate / (1 - Math.pow(1 / (1 + monthlyRate), this.years * 12));
+        }
+    }, {
+        key: 'amortization',
+        get: function get() {
+            var monthlyPayment = this.monthlyPayment;
+            var monthlyRate = 0;
+            monthlyRate = this.rate / 100 / 12;
+            var balance = this.principal;
+            var amortization = [];
 
-var calculateAmortization = exports.calculateAmortization = function calculateAmortization(principal, years, rate) {
-    var _calculateMonthlyPaym = calculateMonthlyPayment(principal, years, rate),
-        monthlyRate = _calculateMonthlyPaym.monthlyRate,
-        monthlyPayment = _calculateMonthlyPaym.monthlyPayment;
+            for (var y = 0; y < this.years; y++) {
+                var interestForYearY = 0;
+                var principalForYearY = 0;
 
-    var balance = principal;
-    var amortization = [];
+                for (var m = 0; m < 12; m++) {
+                    var interestForMonthM = balance * monthlyRate;
+                    var principalForMonthM = monthlyPayment - interestForMonthM;
+                    interestForYearY += interestForMonthM;
+                    principalForYearY += principalForMonthM;
+                    balance -= principalForMonthM;
+                };
+                amortization.push({ principalForYearY: principalForYearY, interestForYearY: interestForYearY, balance: balance });
+            };
+            return amortization;
+        }
+    }]);
 
-    for (var y = 0; y < years; y++) {
-        var interestForYearY = 0;
-        var principalForYearY = 0;
+    return Mortgage;
+}();
 
-        for (var m = 0; m < 12; m++) {
-            var interestForMonthM = balance * monthlyRate;
-            var principalForMonthM = monthlyPayment - interestForMonthM;
-            interestForYearY += interestForMonthM;
-            principalForYearY += principalForMonthM;
-            balance -= principalForMonthM;
-        };
-        amortization.push({ principalForYearY: principalForYearY, interestForYearY: interestForYearY, balance: balance });
-    };
-    return { monthlyPayment: monthlyPayment, monthlyRate: monthlyRate, amortization: amortization };
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _mortgage = __webpack_require__(0);
-
-var mortgage = _interopRequireWildcard(_mortgage);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+;
 
 document.getElementById('calcBtn').addEventListener('click', function () {
-
-    console.log("week");
 
     var principal = document.getElementById('principal').value;
     var years = document.getElementById('years').value;
     var rate = document.getElementById('rate').value;
+    var mortgage = new Mortgage(principal, years, rate);
 
-    var _mortgage$calculateAm = mortgage.calculateAmortization(principal, years, rate),
-        monthlyPayment = _mortgage$calculateAm.monthlyPayment,
-        monthlyRate = _mortgage$calculateAm.monthlyRate,
-        amortization = _mortgage$calculateAm.amortization;
+    document.getElementById('monthlyPayment').innerHTML = mortgage.monthlyPayment.toFixed(2);
+    document.getElementById('monthlyRate').innerHTML = mortgage.monthlyRatePercent.toFixed(2);
+    var html = "";
 
-    document.getElementById('monthlyPayment').innerHTML = monthlyPayment.toFixed(2);
-
-    document.getElementById('monthlyRate').innerHTML = (monthlyRate * 100).toFixed(2);
-    amortization.forEach(function (month) {
-        return console.log(month);
+    mortgage.amortization.forEach(function (year, index) {
+        return html += '\n\n         <tr>\n            <td>Year: ' + (index + 1) + '</td><br/>\n            <td class="currency">Principal: $' + Math.round(year.principalForYearY) + '</td><br/>\n            <td class="currency left">Interest: $' + Math.round(year.interestForYearY) + '</td><br/>\n            <td class="currency">Balance: $' + Math.round(year.balance) + '</td>\n            <td class="stretch">\n                <div class="flex">\n                    <div class="bar principal"\n                         style="flex:' + year.principalForYearY + ';-webkit-flex:' + year.principalForYearY + '">\n                    </div>\n                    <div class="bar interest"\n                         style="flex:' + year.interestForYearY + ';-webkit-flex:' + year.interestForYearY + '">\n                    </div>\n                </div>\n                <br/>\n            </td>\n        </tr>\n    ';
     });
+    document.getElementById("amortization").innerHTML = html;
 });
 
 /***/ })
