@@ -112,14 +112,10 @@ var service = _interopRequireWildcard(_rateServiceMock);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var url = 'rates.json';
-
-fetch(url).then(function (response) {
-    return response.json();
-}).then(function (rates) {
+service.findAll().then(function (rates) {
     var html = '';
     rates.forEach(function (rate) {
-        return html += '\n            <tr>\n                <td>Mortgage Name: ' + rate.name + '\n                </td>\n                <td>\n                    Length in years: ' + rate.years + '\n                </td>\n                <td>\n                    Intrest Rate: ' + rate.rate + '%\n                </td>\n            </tr>\n        ';
+        return html += '\n            <tr>\n                <td>\n                    Mortgage Name: ' + rate.name + '\n                </td>\n                <td>\n                    Length in years: ' + rate.years + '\n                </td>\n                <td>\n                    Interest Rate: ' + rate.rate + '%\n                </td>\n            </tr>\n        ';
     });
     document.getElementById('rates').innerHTML = html;
 }).catch(function (e) {

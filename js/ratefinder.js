@@ -1,12 +1,12 @@
-let url = 'rates.json';
+import * as service from './rate-service-mock';
 
-fetch(url)
-    .then((response) => response.json())
+service.findAll()
     .then((rates) => {
         let html = '';
         rates.forEach((rate) => html += `
             <tr>
-                <td>Mortgage Name: ${rate.name}
+                <td>
+                    Mortgage Name: ${rate.name}
                 </td>
                 <td>
                     Length in years: ${rate.years}
