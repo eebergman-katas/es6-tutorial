@@ -6,9 +6,14 @@ fetch(url)
         let html = '';
         rates.forEach((rate) => html += `
             <tr>
-                <td>${rate.name}</td>
-                <td>${rate.years}</td>
-                </td>${rate.rate}%</td>
+                <td>Mortgage Name: ${rate.name}
+                </td>
+                <td>
+                    Length in years: ${rate.years}
+                </td>
+                <td>
+                    Interest Rate: ${rate.rate}%
+                </td>
             </tr>
         `);
         document.getElementById('rates').innerHTML = html;
